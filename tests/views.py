@@ -254,7 +254,7 @@ class PathDownloadViewTestCase(unittest.TestCase):
         """PathDownloadView.get_file() raises FileNotFound if file is a
         directory."""
         view = setup_view(
-            views.PathDownloadView(path=Path(__file__).parent, "fake request"
+            views.PathDownloadView(path=Path(__file__).parent), "fake request"
         )
         with self.assertRaises(exceptions.FileNotFound):
             view.get_file()
