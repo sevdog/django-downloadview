@@ -1,10 +1,10 @@
 """Tests around project's distribution and packaging."""
-import os
 import unittest
+from pathlib import Path
 
-tests_dir = os.path.dirname(os.path.abspath(__file__))
-project_dir = os.path.dirname(tests_dir)
-build_dir = os.path.join(project_dir, "var", "docs", "html")
+tests_dir = Path(__file__).parent
+project_dir = tests_dir.parent
+build_dir = project_dir / "var" / "docs" / "html"
 
 
 class VersionTestCase(unittest.TestCase):

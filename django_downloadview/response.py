@@ -1,8 +1,8 @@
 """:py:class:`django.http.HttpResponse` subclasses."""
 import mimetypes
-import os
 import re
 import unicodedata
+from pathlib import Path
 from urllib.parse import quote
 
 from django.conf import settings
@@ -199,8 +199,8 @@ class DownloadResponse(StreamingHttpResponse):
         """Return basename."""
         if self.basename:
             return self.basename
-        else:
-            return os.path.basename(self.file.name)
+
+        return Path(self.file.name).name
 
     def get_content_type(self):
         """Return a suitable "Content-Type" header for ``self.file``."""

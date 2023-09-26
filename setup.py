@@ -1,15 +1,15 @@
-import os
+from pathlib import Path
 from setuptools import setup
 
 #: Absolute path to directory containing setup.py file.
-here = os.path.abspath(os.path.dirname(__file__))
+here = Path(__file__).absolute().parent
 
 setup(
     name="django-downloadview",
     use_scm_version={"version_scheme": "post-release"},
     setup_requires=["setuptools_scm"],
     description="Serve files with Django and reverse-proxies.",
-    long_description=open(os.path.join(here, "README.rst")).read(),
+    long_description=(here / "README.rst").open().read(),
     long_description_content_type='text/x-rst',
     classifiers=[
         "Development Status :: 5 - Production/Stable",

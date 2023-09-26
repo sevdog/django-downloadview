@@ -1,5 +1,3 @@
-import os
-
 from django.core.files.base import ContentFile
 import django.test
 from django.urls import reverse
@@ -10,8 +8,8 @@ from demoproject.nginx.views import storage, storage_dir
 
 
 def setup_file():
-    if not os.path.exists(storage_dir):
-        os.makedirs(storage_dir)
+    if not storage_dir.exists():
+        storage_dir.mkdir(parents=True)
     storage.save("hello-world.txt", ContentFile("Hello world!\n"))
 
 

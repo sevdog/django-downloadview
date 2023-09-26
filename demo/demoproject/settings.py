@@ -1,13 +1,13 @@
 """Django settings for django-downloadview demo project."""
-import os
+from pathlib import Path
 
 
 # Configure some relative directories.
-demoproject_dir = os.path.dirname(os.path.abspath(__file__))
-demo_dir = os.path.dirname(demoproject_dir)
-root_dir = os.path.dirname(demo_dir)
-data_dir = os.path.join(root_dir, "var")
-cfg_dir = os.path.join(root_dir, "etc")
+demoproject_dir = Path(__file__).parent
+demo_dir = demoproject_dir.parent
+root_dir = demo_dir.parent
+data_dir = root_dir / "var"
+cfg_dir = root_dir / "etc"
 
 
 # Mandatory settings.
@@ -19,7 +19,7 @@ WSGI_APPLICATION = "demoproject.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(data_dir, "db.sqlite"),
+        "NAME": data_dir / "db.sqlite",
     }
 }
 
@@ -28,9 +28,9 @@ DATABASES = {
 SECRET_KEY = "This is a secret made public on project's repository."
 
 # Media and static files.
-MEDIA_ROOT = os.path.join(data_dir, "media")
+MEDIA_ROOT = data_dir / "media"
 MEDIA_URL = "/media/"
-STATIC_ROOT = os.path.join(data_dir, "static")
+STATIC_ROOT = data_dir / "static"
 STATIC_URL = "/static/"
 
 
@@ -114,7 +114,7 @@ DEBUG = True
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(os.path.dirname(__file__), "templates")],
+        "DIRS": [demoproject_dir / "templates"],
         "OPTIONS": {
             "debug": DEBUG,
             "context_processors": [

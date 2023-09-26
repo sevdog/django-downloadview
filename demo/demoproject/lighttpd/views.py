@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django_downloadview import StorageDownloadView
 from django_downloadview.lighttpd import x_sendfile
 
-storage_dir = os.path.join(settings.MEDIA_ROOT, "lighttpd")
+storage_dir = Path(settings.MEDIA_ROOT) / "lighttpd"
 storage = FileSystemStorage(
     location=storage_dir, base_url="".join([settings.MEDIA_URL, "lighttpd/"])
 )

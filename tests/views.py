@@ -1,7 +1,7 @@
 """Tests around :mod:`django_downloadview.views`."""
 import calendar
 from datetime import datetime
-import os
+from pathlib import Path
 import unittest
 from unittest import mock
 
@@ -254,7 +254,7 @@ class PathDownloadViewTestCase(unittest.TestCase):
         """PathDownloadView.get_file() raises FileNotFound if file is a
         directory."""
         view = setup_view(
-            views.PathDownloadView(path=os.path.dirname(__file__)), "fake request"
+            views.PathDownloadView(path=Path(__file__).parent, "fake request"
         )
         with self.assertRaises(exceptions.FileNotFound):
             view.get_file()

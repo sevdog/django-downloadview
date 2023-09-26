@@ -1,13 +1,13 @@
-import os
+from pathlib import Path
 
 from django_downloadview import PathDownloadView
 
 # Let's initialize some fixtures.
-app_dir = os.path.dirname(os.path.abspath(__file__))
-project_dir = os.path.dirname(app_dir)
-fixtures_dir = os.path.join(project_dir, "fixtures")
+app_dir = Path(__file__).parent
+project_dir = app_dir.parent
+fixtures_dir = project_dir / "fixtures"
 #: Path to a text file that says 'Hello world!'.
-hello_world_path = os.path.join(fixtures_dir, "hello-world.txt")
+hello_world_path = fixtures_dir / "hello-world.txt"
 
 #: Serve ``fixtures/hello-world.txt`` file.
 static_path = PathDownloadView.as_view(path=hello_world_path)
@@ -32,7 +32,7 @@ class DynamicPathDownloadView(PathDownloadView):
         # Get path from URL resolvers or as_view kwarg.
         relative_path = super().get_path()
         # Make it absolute.
-        absolute_path = os.path.join(fixtures_dir, relative_path)
+        absolute_path = fixtures_dir / relative_path
         return absolute_path
 
 

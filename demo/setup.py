@@ -1,13 +1,13 @@
-import os
+from pathlib import Path
 from setuptools import setup
 
-here = os.path.abspath(os.path.dirname(__file__))
+here = Path(__file__).parent.absolute()
 
 setup(
     name="django-downloadview-demo",
     version="1.0",
     description="Serve files with Django and reverse-proxies.",
-    long_description=open(os.path.join(here, "README.rst")).read(),
+    long_description=(here / "README.rst").open().read(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: BSD License",

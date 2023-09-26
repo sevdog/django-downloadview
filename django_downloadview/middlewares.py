@@ -6,13 +6,13 @@ responses and may replace them with optimized download responses.
 """
 import collections.abc
 import copy
-import os
+from pathlib import Path
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.module_loading import import_string
 
 from django_downloadview.response import DownloadResponse
-from django_downloadview.utils import import_member
 
 
 #: Sentinel value to detect whether configuration is to be loaded from Django
@@ -91,10 +91,10 @@ class DownloadDispatcher:
     def auto_configure_middlewares(self):
         """Populate :attr:`middlewares` from
         ``settings.DOWNLOADVIEW_MIDDLEWARES``."""
-        for (key, import_string, kwargs) in getattr(
+        for (key, dotted_path, kwargs) in getattr(
             settings, "DOWNLOADVIEW_MIDDLEWARES", []
         ):
-            factory = import_member(import_string)
+            factory = import_string(dotted_path)
             middleware = factory(**kwargs)
             self.middlewares.append((key, middleware))
 
@@ -141,7 +141,7 @@ class SmartDownloadMiddleware(DownloadDispatcherMiddleware):
     def auto_configure_backend_factory(self):
         "Assign :attr:`backend_factory` from ``settings.DOWNLOADVIEW_BACKEND``"
         try:
-            self.backend_factory = import_member(settings.DOWNLOADVIEW_BACKEND)
+            self.backend_factory = import_string(settings.DOWNLOADVIEW_BACKEND)
         except AttributeError:
             raise ImproperlyConfigured(
                 "SmartDownloadMiddleware requires " "settings.DOWNLOADVIEW_BACKEND"
@@ -164,7 +164,7 @@ class SmartDownloadMiddleware(DownloadDispatcherMiddleware):
             else:
                 args = options
             if "backend" in kwargs:  # Specific backend for this rule.
-                factory = import_member(kwargs["backend"])
+                factory = import_string(kwargs["backend"])
                 del kwargs["backend"]
             else:  # Fallback to global backend.
                 factory = self.backend_factory
