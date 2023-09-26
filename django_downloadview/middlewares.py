@@ -196,22 +196,20 @@ class ProxiedDownloadMiddleware(RealDownloadMiddleware):
         if self.source_url:
             try:
                 file_url = response.file.url
-            except AttributeError:
+            except (AttributeError, NotImplementedError):
                 pass
             else:
                 if file_url.startswith(self.source_url):
-                    file_url = file_url[len(self.source_url) :]
-                    url = file_url
+                    url = file_url[len(self.source_url) :]
         file_name = ""
         if url is None and self.source_dir:
             try:
-                file_name = response.file.name
-            except AttributeError:
+                file_name = response.file.path
+            except (AttributeError, NotImplementedError):
                 pass
             else:
                 if file_name.startswith(self.source_dir):
-                    file_name = os.path.relpath(file_name, self.source_dir)
-                    url = file_name.replace(os.path.sep, "/")
+                    url = Path(file_name).relative_to(self.source_dir).as_posix()
         if url is None:
             message = (
                 """Couldn't capture/convert file attributes into a """
