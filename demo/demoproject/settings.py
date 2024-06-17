@@ -14,7 +14,7 @@ cfg_dir = root_dir / "etc"
 ROOT_URLCONF = "demoproject.urls"
 WSGI_APPLICATION = "demoproject.wsgi.application"
 
-
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # Database.
 DATABASES = {
     "default": {
