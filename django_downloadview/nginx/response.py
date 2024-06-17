@@ -32,11 +32,11 @@ class XAccelRedirectResponse(ProxiedDownloadResponse):
         self["X-Accel-Redirect"] = redirect_url
         self["X-Accel-Charset"] = content_type_to_charset(content_type)
         if with_buffering is not None:
-            self["X-Accel-Buffering"] = with_buffering and "yes" or "no"
+            self["X-Accel-Buffering"] = "yes" if with_buffering else "no"
         if expires:
             expire_seconds = timedelta(expires - now()).seconds
             self["X-Accel-Expires"] = expire_seconds
         elif expires is not None:  # We explicitely want it off.
             self["X-Accel-Expires"] = "off"
         if limit_rate is not None:
-            self["X-Accel-Limit-Rate"] = limit_rate and "%d" % limit_rate or "off"
+            self["X-Accel-Limit-Rate"] = limit_rate and f"{int(limit_rate)}" or "off"

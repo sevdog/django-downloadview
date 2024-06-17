@@ -10,7 +10,7 @@ from django_downloadview import exceptions
 from django_downloadview.response import DownloadResponse
 
 
-class DownloadMixin(object):
+class DownloadMixin:
     """Placeholders and base implementation to create file download views.
 
     .. note::
@@ -156,7 +156,7 @@ class DownloadMixin(object):
         except exceptions.FileNotFound:
             return self.file_not_found_response()
         # Respect the If-Modified-Since header.
-        since = self.request.META.get("HTTP_IF_MODIFIED_SINCE", None)
+        since = self.request.headers.get("if-modified-since", None)
         if since is not None:
             if not self.was_modified_since(self.file_instance, since):
                 return self.not_modified_response(**response_kwargs)
